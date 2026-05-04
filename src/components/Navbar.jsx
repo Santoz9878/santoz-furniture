@@ -29,11 +29,11 @@ const Navbar = ({ cartItemCount, onCartClick, currentUser, onAuthClick, onLogout
         </div>
 
         <div className={`nav-menu ${mobileMenuOpen ? 'active' : ''}`}>
-          <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>Home</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('products'); }}>Products</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>About</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('branches'); }}>Branches</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>Contact</a>
+         <button className="nav-link" onClick={() => scrollToSection('home')}>Home</button>
+<button className="nav-link" onClick={() => scrollToSection('products')}>Products</button>
+<button className="nav-link" onClick={() => scrollToSection('about')}>About</button>
+<button className="nav-link" onClick={() => scrollToSection('branches')}>Branches</button>
+<button className="nav-link" onClick={() => scrollToSection('contact')}>Contact</button>
         </div>
 
         <div className="nav-actions">
@@ -320,6 +320,37 @@ const Navbar = ({ cartItemCount, onCartClick, currentUser, onAuthClick, onLogout
             font-size: 0.85rem;
           }
         }
+          .nav-link {
+  background: none;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2c2c2c;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0;
+}
+
+.nav-link:hover {
+  color: #c8a05e;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(135deg, #c8a05e 0%, #a07840 100%);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
       `}</style>
     </nav>
   );
