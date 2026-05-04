@@ -47,7 +47,7 @@ const Footer = () => {
       </div>
       
       <div className="footer-bottom">
-        <p>&copy; 2024 SANTOZ FURNITURE LIMITED. All rights reserved.</p>
+        <p>&copy; 2026 SANTOZ FURNITURE LIMITED. All rights reserved.</p>
         <p>Crafted with <i className="fas fa-heart"></i> in Kenya</p>
       </div>
 
