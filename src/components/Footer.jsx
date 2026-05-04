@@ -11,32 +11,32 @@ const Footer = () => {
           </div>
           <p>Creating timeless furniture that transforms houses into homes since 1995.</p>
           <div className="social-links">
-            <a href="#"><i className="fab fa-facebook-f"></i></a>
-            <a href="#"><i className="fab fa-twitter"></i></a>
-            <a href="#"><i className="fab fa-instagram"></i></a>
-            <a href="#"><i className="fab fa-pinterest"></i></a>
+            <button className="social-link" aria-label="Facebook"><i className="fab fa-facebook-f"></i></button>
+            <button className="social-link" aria-label="Twitter"><i className="fab fa-twitter"></i></button>
+            <button className="social-link" aria-label="Instagram"><i className="fab fa-instagram"></i></button>
+            <button className="social-link" aria-label="Pinterest"><i className="fab fa-pinterest"></i></button>
           </div>
         </div>
         
         <div className="footer-section">
           <h4>Quick Links</h4>
-          <a href="#home">Home</a>
-          <a href="#products">Products</a>
-          <a href="#about">About Us</a>
-          <a href="#branches">Branches</a>
+          <button className="footer-link" onClick={() => document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' })}>Home</button>
+          <button className="footer-link" onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}>Products</button>
+          <button className="footer-link" onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>About Us</button>
+          <button className="footer-link" onClick={() => document.getElementById('branches')?.scrollIntoView({ behavior: 'smooth' })}>Branches</button>
         </div>
         
         <div className="footer-section">
           <h4>Customer Service</h4>
-          <a href="#">FAQs</a>
-          <a href="#">Shipping Policy</a>
-          <a href="#">Returns & Warranty</a>
-          <a href="#">Privacy Policy</a>
+          <button className="footer-link">FAQs</button>
+          <button className="footer-link">Shipping Policy</button>
+          <button className="footer-link">Returns & Warranty</button>
+          <button className="footer-link">Privacy Policy</button>
         </div>
         
         <div className="footer-section">
           <h4>Contact Info</h4>
-          <p><i className="fas fa-phone-alt"></i> +254 123 123 456</p>
+          <p><i className="fas fa-phone-alt"></i> +254 700 123 456</p>
           <p><i className="fas fa-envelope"></i> info@santozfurniture.com</p>
           <p><i className="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
           <div className="newsletter">
@@ -47,7 +47,7 @@ const Footer = () => {
       </div>
       
       <div className="footer-bottom">
-        <p>&copy; 2026 SANTOZ FURNITURE LIMITED. All rights reserved.</p>
+        <p>&copy; 2024 SANTOZ FURNITURE LIMITED. All rights reserved.</p>
         <p>Crafted with <i className="fas fa-heart"></i> in Kenya</p>
       </div>
 
@@ -97,7 +97,7 @@ const Footer = () => {
           margin-top: 1rem;
         }
 
-        .social-links a {
+        .social-link {
           display: flex;
           align-items: center;
           justify-content: center;
@@ -107,9 +107,12 @@ const Footer = () => {
           border-radius: 50%;
           color: white;
           transition: all 0.3s ease;
+          cursor: pointer;
+          border: none;
+          font-size: 1rem;
         }
 
-        .social-links a:hover {
+        .social-link:hover {
           background: #c8a05e;
           transform: translateY(-3px);
         }
@@ -120,15 +123,22 @@ const Footer = () => {
           color: #c8a05e;
         }
 
-        .footer-section a {
+        .footer-link {
           display: block;
           color: #aaa;
           text-decoration: none;
           margin-bottom: 0.5rem;
-          transition: color 0.3s ease;
+          transition: all 0.3s ease;
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-family: 'Poppins', sans-serif;
+          font-size: 1rem;
+          text-align: left;
+          padding: 0;
         }
 
-        .footer-section a:hover {
+        .footer-link:hover {
           color: #c8a05e;
           transform: translateX(5px);
         }
@@ -187,6 +197,14 @@ const Footer = () => {
 
           .social-links {
             justify-content: center;
+          }
+          
+          .footer-link {
+            text-align: center;
+          }
+          
+          .footer-link:hover {
+            transform: translateX(0);
           }
 
           .footer-bottom {
