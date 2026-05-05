@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getCartTotal, clearCart, showCheckout, onSubmitOrder, currentUser, onAuthClick }) => {
+const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getCartTotal, clearCart, showCheckout, onSubmitOrder, currentUser, onAuthClick, checkoutData, onCheckoutChange, paymentStatus, paymentLoading }) => {
   return (
     <div className="cart-overlay">
       <div className="cart-modal">
@@ -89,31 +89,69 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
             ) : (
               <>
                 <h3>Complete Your Order</h3>
+                {paymentStatus && (
+                  <div className={`payment-status ${paymentStatus.startsWith('✅') ? 'success' : 'error'}`}>
+                    {paymentStatus}
+                  </div>
+                )}
                 <form onSubmit={onSubmitOrder}>
                   <div className="form-group">
                     <label>Full Name *</label>
-                    <input type="text" required placeholder="John Doe" defaultValue={currentUser.fullName} />
+                    <input
+                      type="text"
+                      required
+                      placeholder="John Doe"
+                      value={checkoutData.fullName}
+                      onChange={(e) => onCheckoutChange('fullName', e.target.value)}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Email Address *</label>
-                    <input type="email" required placeholder="john@example.com" defaultValue={currentUser.email} />
+                    <input
+                      type="email"
+                      required
+                      placeholder="john@example.com"
+                      value={checkoutData.email}
+                      onChange={(e) => onCheckoutChange('email', e.target.value)}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Phone Number *</label>
-                    <input type="tel" required placeholder="+254 700 123 456" defaultValue={currentUser.phone || ''} />
+                    <input
+                      type="tel"
+                      required
+                      placeholder="254712345678"
+                      value={checkoutData.phone}
+                      onChange={(e) => onCheckoutChange('phone', e.target.value)}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Delivery Address *</label>
-                    <textarea rows="3" required placeholder="Enter your full address including county" defaultValue={currentUser.address || ''}></textarea>
+                    <textarea
+                      rows="3"
+                      required
+                      placeholder="Enter your full address including county"
+                      value={checkoutData.address}
+                      onChange={(e) => onCheckoutChange('address', e.target.value)}
+                    ></textarea>
                   </div>
                   <div className="form-row">
                     <div className="form-group">
                       <label>City/Town *</label>
-                      <input type="text" required />
+                      <input
+                        type="text"
+                        required
+                        value={checkoutData.city}
+                        onChange={(e) => onCheckoutChange('city', e.target.value)}
+                      />
                     </div>
                     <div className="form-group">
                       <label>Postal Code</label>
-                      <input type="text" />
+                      <input
+                        type="text"
+                        value={checkoutData.postalCode}
+                        onChange={(e) => onCheckoutChange('postalCode', e.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="order-summary">
@@ -127,7 +165,9 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
                       <strong>${getCartTotal().toFixed(2)}</strong>
                     </div>
                   </div>
-                  <button type="submit" className="place-order-btn">Place Order</button>
+                  <button type="submit" className="place-order-btn" disabled={paymentLoading}>
+                    {paymentLoading ? 'Processing payment...' : 'Pay with M-Pesa'}
+                  </button>
                 </form>
               </>
             )}
@@ -371,6 +411,26 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
           display: flex;
           justify-content: space-between;
           margin-bottom: 0.5rem;
+        }
+
+        .payment-status {
+          padding: 1rem;
+          border-radius: 10px;
+          margin-bottom: 1rem;
+          font-weight: 600;
+          line-height: 1.4;
+        }
+
+        .payment-status.success {
+          background: #ecf9f1;
+          color: #1a7f37;
+          border: 1px solid #b2ebc2;
+        }
+
+        .payment-status.error {
+          background: #fdecea;
+          color: #a1201a;
+          border: 1px solid #f4b2b2;
         }
 
         .place-order-btn {

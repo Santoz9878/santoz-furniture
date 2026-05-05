@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Navbar = ({ cartItemCount, onCartClick, currentUser, onAuthClick, onLogout }) => {
+const Navbar = ({ cartItemCount, onCartClick, currentUser, onAuthClick, onLogout, onShowHistory }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -44,6 +44,9 @@ const Navbar = ({ cartItemCount, onCartClick, currentUser, onAuthClick, onLogout
           
           {currentUser ? (
             <div className="user-menu">
+              <button className="history-btn" onClick={onShowHistory}>
+                <i className="fas fa-history"></i> Orders
+              </button>
               <span className="user-name">{currentUser.fullName}</span>
               <button className="logout-btn" onClick={onLogout}>
                 <i className="fas fa-sign-out-alt"></i> Logout
@@ -186,6 +189,27 @@ const Navbar = ({ cartItemCount, onCartClick, currentUser, onAuthClick, onLogout
           display: flex;
           gap: 0.8rem;
           align-items: center;
+        }
+
+        .history-btn {
+          padding: 0.6rem 1rem;
+          background: transparent;
+          color: #2c2c2c;
+          border: 2px solid #2c2c2c;
+          border-radius: 5px;
+          cursor: pointer;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          transition: all 0.3s ease;
+        }
+
+        .history-btn:hover {
+          background: #c8a05e;
+          color: white;
+          border-color: #c8a05e;
+          transform: translateY(-1px);
         }
 
         .login-btn,
