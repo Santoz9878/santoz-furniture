@@ -1,19 +1,4 @@
 {
-  "builds": [
-    {
-      "src": "santoz_backend/wsgi.py",
-      "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb" }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/static/(.*)",
-      "dest": "/staticfiles/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "santoz_backend/wsgi.py"
-    }
-  ]
+  "buildCommand": "pip install -r requirements.txt",
+  "outputDirectory": "."
 }
