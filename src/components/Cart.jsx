@@ -1,6 +1,14 @@
 import React from 'react';
 
 const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getCartTotal, clearCart, showCheckout, onSubmitOrder, currentUser, onAuthClick, checkoutData, onCheckoutChange, paymentStatus, paymentLoading }) => {
+  const paymentMethodLabel = checkoutData.paymentMethod === 'creditcard'
+    ? 'Credit Card'
+    : checkoutData.paymentMethod === 'debitcard'
+    ? 'Debit Card'
+    : checkoutData.paymentMethod === 'cod'
+    ? 'Cash on Delivery'
+    : 'M-Pesa';
+
   return (
     <div className="cart-overlay">
       <div className="cart-modal">
@@ -54,6 +62,10 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
                 <div className="cart-total">
                   <span>Delivery:</span>
                   <strong>Free</strong>
+                </div>
+                <div className="cart-payment-preview">
+                  <span>Payment method:</span>
+                  <strong>{paymentMethodLabel}</strong>
                 </div>
                 <div className="cart-total total">
                   <span>Total:</span>
@@ -375,6 +387,22 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
           padding-top: 0.5rem;
           border-top: 2px solid #eee;
           font-size: 1.2rem;
+        }
+
+        .cart-payment-preview {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.9rem 0;
+          border-top: 1px dashed #eee;
+          border-bottom: 1px dashed #eee;
+          margin: 1rem 0;
+          color: #333;
+        }
+
+        .cart-payment-preview strong {
+          font-weight: 700;
+          color: #c8a05e;
         }
 
         .cart-actions {
