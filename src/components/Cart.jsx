@@ -165,8 +165,48 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
                       <strong>${getCartTotal().toFixed(2)}</strong>
                     </div>
                   </div>
+                  <div className="payment-methods">
+                    <h4>Select Payment Method</h4>
+                    <div className="payment-options">
+                      <button 
+                        type="button" 
+                        className="payment-option mpesa-option"
+                        onClick={() => onCheckoutChange('paymentMethod', 'mpesa')}
+                      >
+                        <i className="fas fa-mobile-alt"></i>
+                        <span>M-Pesa</span>
+                      </button>
+                      <button 
+                        type="button" 
+                        className="payment-option creditcard-option"
+                        onClick={() => onCheckoutChange('paymentMethod', 'creditcard')}
+                      >
+                        <i className="fas fa-credit-card"></i>
+                        <span>Credit Card</span>
+                      </button>
+                      <button 
+                        type="button" 
+                        className="payment-option debitcard-option"
+                        onClick={() => onCheckoutChange('paymentMethod', 'debitcard')}
+                      >
+                        <i className="fas fa-credit-card"></i>
+                        <span>Debit Card</span>
+                      </button>
+                      <button 
+                        type="button" 
+                        className="payment-option cod-option"
+                        onClick={() => onCheckoutChange('paymentMethod', 'cod')}
+                      >
+                        <i className="fas fa-handshake"></i>
+                        <span>Cash on Delivery</span>
+                      </button>
+                    </div>
+                    <div className="selected-method">
+                      Selected: <strong>{checkoutData.paymentMethod || 'M-Pesa'}</strong>
+                    </div>
+                  </div>
                   <button type="submit" className="place-order-btn" disabled={paymentLoading}>
-                    {paymentLoading ? 'Processing payment...' : 'Pay with M-Pesa'}
+                    {paymentLoading ? 'Processing payment...' : `Pay with ${(checkoutData.paymentMethod || 'M-Pesa').charAt(0).toUpperCase() + (checkoutData.paymentMethod || 'M-Pesa').slice(1).replace(/([a-z])([A-Z])/g, '$1 $2')}`}
                   </button>
                 </form>
               </>
@@ -503,6 +543,90 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
         .prompt-signup-btn:hover {
           transform: translateY(-2px);
           box-shadow: 0 5px 15px rgba(200, 160, 94, 0.4);
+        }
+
+        .payment-methods {
+          background: #faf9f8;
+          padding: 1rem;
+          border-radius: 10px;
+          margin: 1rem 0;
+        }
+
+        .payment-methods h4 {
+          margin-bottom: 1rem;
+          color: #333;
+        }
+
+        .payment-options {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.8rem;
+          margin-bottom: 1rem;
+        }
+
+        .payment-option {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+          border: 2px solid #ddd;
+          border-radius: 8px;
+          background: white;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          gap: 0.5rem;
+        }
+
+        .payment-option i {
+          font-size: 1.5rem;
+        }
+
+        .payment-option span {
+          font-size: 0.85rem;
+          font-weight: 600;
+          text-align: center;
+        }
+
+        .payment-option:hover {
+          border-color: #c8a05e;
+          background: #fff9f0;
+          transform: translateY(-2px);
+        }
+
+        .payment-option.mpesa-option {
+          color: #00a86b;
+        }
+
+        .payment-option.creditcard-option {
+          color: #0066cc;
+        }
+
+        .payment-option.debitcard-option {
+          color: #ff6b6b;
+        }
+
+        .payment-option.cod-option {
+          color: #c8a05e;
+        }
+
+        .selected-method {
+          text-align: center;
+          font-size: 0.9rem;
+          color: #666;
+          padding: 0.5rem;
+          background: white;
+          border-radius: 5px;
+        }
+
+        @media (max-width: 600px) {
+          .payment-options {
+            grid-template-columns: 1fr;
+          }
+
+          .form-row {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
     </div>

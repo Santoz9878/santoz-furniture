@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
+const Login = ({ onLoginSuccess, onSwitchToSignup, onBackClick }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -42,6 +42,9 @@ const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
 
   return (
     <div className="auth-container">
+      <button className="back-button" onClick={onBackClick}>
+        <i className="fas fa-arrow-left"></i> Back to Home
+      </button>
       <div className="auth-card">
         <h2>Login</h2>
         <p className="auth-subtitle">Welcome back to Santoz Furniture</p>
@@ -213,6 +216,43 @@ const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
 
         .link-btn:hover {
           color: #764ba2;
+        }
+
+        .back-button {
+          position: absolute;
+          top: 30px;
+          left: 30px;
+          background: white;
+          border: 2px solid #667eea;
+          color: #667eea;
+          padding: 10px 20px;
+          border-radius: 5px;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .back-button:hover {
+          background: #667eea;
+          color: white;
+          transform: translateX(-3px);
+        }
+
+        .back-button i {
+          font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+          .back-button {
+            top: 15px;
+            left: 15px;
+            padding: 8px 15px;
+            font-size: 12px;
+          }
         }
       `}</style>
     </div>

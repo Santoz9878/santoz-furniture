@@ -26,7 +26,8 @@ function App() {
     phone: '',
     address: '',
     city: 'Nairobi',
-    postalCode: ''
+    postalCode: '',
+    paymentMethod: 'mpesa'
   });
   const [paymentStatus, setPaymentStatus] = useState('');
   const [paymentLoading, setPaymentLoading] = useState(false);
@@ -77,6 +78,44 @@ function App() {
   useEffect(() => {
     localStorage.setItem('santozCart', JSON.stringify(cartItems));
   }, [cartItems]);
+
+  // Inactivity logout handler (10 minutes = 600,000 ms)
+  useEffect(() => {
+    if (!currentUser) return;
+
+    let inactivityTimer;
+    const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 minutes
+
+    const resetInactivityTimer = () => {
+      clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => {
+        console.log('User inactive for 10 minutes. Logging out...');
+        handleLogout();
+      }, INACTIVITY_TIMEOUT);
+    };
+
+    // Activity events to track
+    const events = ['mousedown', 'keydown', 'scroll', 'touchstart', 'click'];
+
+    events.forEach(event => {
+      window.addEventListener(event, resetInactivityTimer);
+    });
+
+    // Initialize the timer on mount
+    resetInactivityTimer();
+
+    // Cleanup
+    return () => {
+      clearTimeout(inactivityTimer);
+      events.forEach(event => {
+        window.removeEventListener(event, resetInactivityTimer);
+      });
+    };
+  }, [currentUser]);
+
+  const handleBackClick = () => {
+    setAuthView('home');
+  };
 
   const addToCart = (product) => {
     setCartItems(prevItems => {
@@ -146,7 +185,14 @@ function App() {
     }
 
     setPaymentLoading(true);
-    setPaymentStatus('Creating order and initiating M-Pesa payment...');
+    const paymentMethodDisplay = {
+      'mpesa': 'M-Pesa',
+      'creditcard': 'Credit Card',
+      'debitcard': 'Debit Card',
+      'cod': 'Cash on Delivery'
+    };
+    const methodDisplay = paymentMethodDisplay[checkoutData.paymentMethod] || 'M-Pesa';
+    setPaymentStatus(`Creating order and initiating ${methodDisplay} payment...`);
 
     try {
       const orderPayload = {
@@ -156,7 +202,7 @@ function App() {
         delivery_address: checkoutData.address,
         city: checkoutData.city,
         total_amount: getCartTotal(),
-        payment_method: 'mpesa',
+        payment_method: checkoutData.paymentMethod || 'mpesa',
         items: cartItems.map(item => ({
           product_id: item.id,
           product_name: item.name,
@@ -183,20 +229,36 @@ function App() {
         throw new Error('Order ID missing from response.');
       }
 
-      const paymentResponse = await fetch('http://localhost:8000/api/payments/initiate-stk-push/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          order_id: orderId,
-          phone_number: checkoutData.phone.replace(/\s+/g, '')
-        })
-      });
+      let paymentResult = {};
+      const paymentMethod = checkoutData.paymentMethod || 'mpesa';
 
-      const paymentResult = await paymentResponse.json();
-      if (!paymentResponse.ok) {
-        throw new Error(paymentResult.error || paymentResult.detail || 'Unable to start M-Pesa payment.');
+      // Handle different payment methods
+      if (paymentMethod === 'mpesa') {
+        const paymentResponse = await fetch('http://localhost:8000/api/payments/initiate-stk-push/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            order_id: orderId,
+            phone_number: checkoutData.phone.replace(/\s+/g, '')
+          })
+        });
+
+        paymentResult = await paymentResponse.json();
+        if (!paymentResponse.ok) {
+          throw new Error(paymentResult.error || paymentResult.detail || 'Unable to start M-Pesa payment.');
+        }
+      } else if (paymentMethod === 'cod') {
+        paymentResult = {
+          message: 'Order created successfully. You will pay on delivery.',
+          payment_id: 'COD-' + orderId
+        };
+      } else if (paymentMethod === 'creditcard' || paymentMethod === 'debitcard') {
+        paymentResult = {
+          message: `Order created successfully. Redirecting to ${paymentMethod === 'creditcard' ? 'Credit Card' : 'Debit Card'} payment...`,
+          payment_id: 'CARD-' + orderId
+        };
       }
 
       const confirmation = {
@@ -204,9 +266,10 @@ function App() {
         orderNumber: orderResult.order.order_number,
         amount: orderResult.order.total_amount,
         phone: checkoutData.phone,
-        status: 'processing',
+        status: paymentMethod === 'cod' ? 'pending' : 'processing',
         date: new Date().toISOString(),
         paymentId: paymentResult.payment_id,
+        paymentMethod: paymentMethod,
         message: paymentResult.response_description || paymentResult.message
       };
 
@@ -217,7 +280,12 @@ function App() {
       });
 
       setOrderConfirmation(confirmation);
-      setPaymentStatus(`✅ ${paymentResult.message}. Please complete the payment on your phone.`);
+      const statusMessage = paymentMethod === 'mpesa' 
+        ? `✅ ${paymentResult.message}. Please complete the payment on your phone.`
+        : paymentMethod === 'cod'
+        ? `✅ ${paymentResult.message}`
+        : `✅ ${paymentResult.message}`;
+      setPaymentStatus(statusMessage);
       setCartItems([]);
       setShowCheckout(false);
       setIsCartOpen(false);
@@ -267,6 +335,7 @@ function App() {
       <Login 
         onLoginSuccess={handleLoginSuccess}
         onSwitchToSignup={() => setAuthView('signup')}
+        onBackClick={handleBackClick}
       />
     );
   }
@@ -277,6 +346,7 @@ function App() {
       <Signup 
         onSignupSuccess={handleSignupSuccess}
         onSwitchToLogin={() => setAuthView('login')}
+        onBackClick={handleBackClick}
       />
     );
   }

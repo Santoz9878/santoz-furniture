@@ -1,4 +1,4 @@
 {
   "buildCommand": "pip install -r requirements.txt",
-  "outputDirectory": "."
+  "startCommand": "gunicorn santoz_backend.wsgi:application"
 }
