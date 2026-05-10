@@ -67,6 +67,39 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
                   <span>Payment method:</span>
                   <strong>{paymentMethodLabel}</strong>
                 </div>
+                <div className="cart-payment-options">
+                  <span>Choose payment option</span>
+                  <div className="payment-options">
+                    <button
+                      type="button"
+                      className={`payment-option ${checkoutData.paymentMethod === 'mpesa' ? 'active' : ''}`}
+                      onClick={() => onCheckoutChange('paymentMethod', 'mpesa')}
+                    >
+                      M-Pesa
+                    </button>
+                    <button
+                      type="button"
+                      className={`payment-option ${checkoutData.paymentMethod === 'creditcard' ? 'active' : ''}`}
+                      onClick={() => onCheckoutChange('paymentMethod', 'creditcard')}
+                    >
+                      Credit Card
+                    </button>
+                    <button
+                      type="button"
+                      className={`payment-option ${checkoutData.paymentMethod === 'debitcard' ? 'active' : ''}`}
+                      onClick={() => onCheckoutChange('paymentMethod', 'debitcard')}
+                    >
+                      Debit Card
+                    </button>
+                    <button
+                      type="button"
+                      className={`payment-option ${checkoutData.paymentMethod === 'cod' ? 'active' : ''}`}
+                      onClick={() => onCheckoutChange('paymentMethod', 'cod')}
+                    >
+                      Cash on Delivery
+                    </button>
+                  </div>
+                </div>
                 <div className="cart-total total">
                   <span>Total:</span>
                   <strong>KES {getCartTotal().toFixed(2)}</strong>
@@ -403,6 +436,42 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
         .cart-payment-preview strong {
           font-weight: 700;
           color: #c8a05e;
+        }
+
+        .cart-payment-options {
+          margin-bottom: 1rem;
+        }
+
+        .cart-payment-options span {
+          display: block;
+          margin-bottom: 0.75rem;
+          color: #555;
+          font-size: 0.95rem;
+          font-weight: 500;
+        }
+
+        .payment-options {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 0.75rem;
+        }
+
+        .payment-option {
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          padding: 0.85rem 0.95rem;
+          background: white;
+          color: #333;
+          cursor: pointer;
+          font-weight: 600;
+          transition: all 0.2s ease;
+        }
+
+        .payment-option:hover,
+        .payment-option.active {
+          border-color: #c8a05e;
+          background: #fff9f0;
+          color: #c87d1f;
         }
 
         .cart-actions {
