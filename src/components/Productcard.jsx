@@ -28,8 +28,8 @@ const ProductCard = ({ product, addToCart }) => {
         </div>
         <p className="product-description">{product.description}</p>
         <div className="product-price">
-          <span className="current-price">${product.price}</span>
-          <span className="original-price">${product.originalPrice}</span>
+          <span className="current-price">KES {product.price}</span>
+          <span className="original-price">KES {product.originalPrice}</span>
         </div>
         <button className="add-to-cart" onClick={() => addToCart(product)}>
           <i className="fas fa-shopping-cart"></i>

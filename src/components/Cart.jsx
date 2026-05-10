@@ -30,7 +30,7 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
                     <img src={item.image} alt={item.name} />
                     <div className="cart-item-details">
                       <h3>{item.name}</h3>
-                      <p className="item-price">${item.price}</p>
+                      <p className="item-price">KES {item.price}</p>
                       <div className="quantity-controls">
                         <button onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}>-</button>
                         <span>{item.quantity}</span>
@@ -49,7 +49,7 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
               <div className="cart-footer">
                 <div className="cart-total">
                   <span>Subtotal:</span>
-                  <strong>${getCartTotal().toFixed(2)}</strong>
+                  <strong>KES {getCartTotal().toFixed(2)}</strong>
                 </div>
                 <div className="cart-total">
                   <span>Delivery:</span>
@@ -57,7 +57,7 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
                 </div>
                 <div className="cart-total total">
                   <span>Total:</span>
-                  <strong>${getCartTotal().toFixed(2)}</strong>
+                  <strong>KES {getCartTotal().toFixed(2)}</strong>
                 </div>
                 <div className="cart-actions">
                   <button className="clear-cart" onClick={clearCart}>Clear Cart</button>
@@ -162,7 +162,7 @@ const Cart = ({ cartItems, onClose, onRemove, onUpdateQuantity, onCheckout, getC
                     </div>
                     <div className="summary-row">
                       <span>Total Amount:</span>
-                      <strong>${getCartTotal().toFixed(2)}</strong>
+                      <strong>KES {getCartTotal().toFixed(2)}</strong>
                     </div>
                   </div>
                   <div className="payment-methods">
